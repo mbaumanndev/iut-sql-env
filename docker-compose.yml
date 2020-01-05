@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  mssql:
+    restart: 'no'
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Amiens2020!
+
+  sqlcmd:
+    restart: 'no'
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    depends_on:
+      - mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Amiens2020!
+    command: >
+      sh -c '/opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P Amiens2020!'
