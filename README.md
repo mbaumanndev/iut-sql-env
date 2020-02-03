@@ -45,3 +45,13 @@ En fin de séance, n'oubliez pas d'éteindre l'infrastructure avec la commande a
 ```
 docker-compose down
 ```
+
+Cours sur les ORMs
+------------------
+
+```
+dotnet tool install --global dotnet-ef --version 3.1.1
+cd src/IutInfo.BddAvance.CoursOrm
+dotnet restore
+dotnet run
+```
