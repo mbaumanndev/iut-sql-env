@@ -55,3 +55,17 @@ cd src/IutInfo.BddAvance.CoursOrm
 dotnet restore
 dotnet run
 ```
+
+Talend
+------
+
+```
+/opt/talend/TOS_BD-linux-gtk-x86_64 -vm "/usr/lib/jvm/java-8-oracle/bin"
+```
+
+Générateur de données
+---------------------
+
+```
+dotnet run --project src/IutInfo.BddAvance.FakeDataGenerator
+```
