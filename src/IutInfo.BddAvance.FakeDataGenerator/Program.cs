@@ -88,12 +88,12 @@ namespace IutInfo.BddAvance.FakeDataGenerator
                 using (var v_ProduitsWritter = new StreamWriter("produits.csv"))
                 using (var v_ProduitsCsv = new CsvWriter(v_ProduitsWritter, CultureInfo.InvariantCulture))
                 {
-                    v_ProduitsCsv.WriteRecords(v_Clients.Select(c => new ClientDto
+                    v_ProduitsCsv.WriteRecords(v_Produits.Select(c => new ProduitDto
                     {
                         Nom = c.Nom,
-                        Prenom = c.Prenom,
-                        Addresse = c.Addresse,
-                        Naissance = c.Naissance
+                        Description = c.Description,
+                        Prix = c.Prix,
+                        Stock = c.Stock
                     }));
                 }
 
