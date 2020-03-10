@@ -15,7 +15,7 @@ namespace IutInfo.BddAvance.FakeDataGenerator
     internal static class Program
     {
         private const int MAX_PRODUCT_PER_COMMAND = 10;
-        private const int CLIENT_NUMBER = 8000;
+        private const int CLIENT_NUMBER = 80;
 
         internal static void Main(string[] args)
         {
@@ -38,23 +38,23 @@ namespace IutInfo.BddAvance.FakeDataGenerator
             {
                 var v_ProduitsFaker = new Faker<Produit>("fr")
                     .StrictMode(true)
-                    .RuleFor(p => p.Id, f => ++prdIds)
+                    .RuleFor(p => p.Id, _ => ++prdIds)
                     .RuleFor(p => p.Nom, f => f.Commerce.ProductName())
                     .RuleFor(p => p.Description, f => f.Commerce.ProductAdjective())
                     .RuleFor(p => p.Prix, f => decimal.Parse(f.Commerce.Price()))
                     .RuleFor(p => p.Stock, f => f.Random.Int(0, 5000));
 
-                v_Produits = v_ProduitsFaker.Generate(10_000 * MAX_PRODUCT_PER_COMMAND);
+                v_Produits = v_ProduitsFaker.Generate(100 * MAX_PRODUCT_PER_COMMAND);
 
                 var v_ClientFaker = new Faker<Client>("fr")
                     .StrictMode(true)
-                    .RuleFor(c => c.Id, f => ++cliIds)
+                    .RuleFor(c => c.Id, _ => ++cliIds)
                     .RuleFor(c => c.Nom, f => f.Name.LastName())
                     .RuleFor(c => c.Prenom, f => f.Name.FirstName())
                     .RuleFor(c => c.Addresse, f => f.Address.City())
                     .RuleFor(c => c.Naissance, f => f.Date.Past(65, DateTime.Now.AddYears(-20)));
 
-                v_Clients = v_ClientFaker.Generate(CLIENT_NUMBER * MAX_PRODUCT_PER_COMMAND);
+                v_Clients = v_ClientFaker.Generate(CLIENT_NUMBER);
 
                 var v_ProduitCommandeFaker = new Faker<ProduitDeCommande>("fr")
                     .StrictMode(false)
@@ -102,10 +102,18 @@ namespace IutInfo.BddAvance.FakeDataGenerator
                     var v_CommandesSerializer = new JsonSerializer();
                     v_CommandesSerializer.Serialize(v_CommandesWritter, v_Commandes.Select(c => new CommandeDto
                     {
+                        Id = c.Id,
                         Client = $"{c.Client.Prenom} {c.Client.Nom}",
                         Date = c.Date,
                         Statut = (short)c.Statut,
-                        Produits = c.Produits
+                        Produits = c.Produits.Select(p => new ProduitDeCommandeDto
+                        {
+                            CmdId = c.Id,
+                            Prix = p.Prix,
+                            Description = p.Description,
+                            Nom = p.Nom,
+                            Quantite = p.Quantite
+                        })
                     }));
                 }
 
